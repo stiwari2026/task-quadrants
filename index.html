@@ -69,24 +69,24 @@
   </div>
 </div>
 <script>
-const C={Bank:"#1d2b4f",Government:"#0e6f8f",Product:"#9a7417",Marketing:"#c8364a",Payments:"#17804f",Insurer:"#17804f",Tech:"#2f7f9f",Consulting:"#7b4fb0","Asset manager":"#17804f"};
+const C={Finance:"#1d2b4f",HR:"#7b4fb0",Retail:"#9a7417",Healthcare:"#c8364a",Legal:"#0e6f8f",IT:"#2f7f9f",Logistics:"#17804f",Sales:"#b5531c"};
 const T=[
- ["Bank","Check a loan file",0,"Clear criteria, but a person owns the credit call with AI checking documents."],
- ["Government","Approve a benefit claim",0,"Rules decide eligibility, yet accountability needs a person to sign off."],
- ["Product","Write release notes",0,"Facts are fixed; a person shapes them with AI drafting."],
- ["Marketing","Translate a product page",0,"There is a correct meaning; a person checks tone with AI translating."],
- ["Payments","Match payments to invoices",2,"Deterministic matching AI can run alone, with exception checks."],
- ["Insurer","Check a claim form",2,"Completeness checks are rule-based and automatable."],
- ["Tech","Reset a password by policy",2,"A fixed policy AI can execute with audit checks."],
- ["Government","Check a permit form",2,"Form validation has a right answer AI can verify."],
- ["Marketing","Test ad versions",1,"Agents can run many variants; a person judges what fits the brand."],
- ["Consulting","Size a market",1,"Many defensible estimates; agents gather, a person judges."],
- ["Product","Sort user comments",1,"Clustering is open-ended; agents sort, a person judges themes."],
- ["Insurer","Settle a disputed claim",1,"Negotiated outcome; agents prepare, a person judges fairness."],
- ["Consulting","Advise on a merger",3,"Judgment-heavy; a person decides with AI analysis alongside."],
- ["Bank","Plan a negotiation",3,"Strategy and relationships; a person decides."],
- ["Asset manager","Write investor letter",3,"Voice and trust matter; a person writes, AI assists."],
- ["Government","Draft a policy",3,"Value trade-offs; a person decides, AI supports research."]
+ ["Healthcare","Read an X-ray for fractures",0,"There is a correct finding; AI flags it, a radiologist confirms and signs."],
+ ["Legal","Review a contract for missing clauses",0,"A checklist defines the answer; AI scans, a lawyer owns the sign-off."],
+ ["Finance","Prepare a tax return",0,"Tax rules give one right figure; an accountant leads with AI computing."],
+ ["IT","Fix a failing production bug",0,"The bug has a real cause; an engineer leads with an AI coding assistant."],
+ ["Sales","Personalise outreach emails",1,"Many good versions exist; agents draft at scale, a rep judges what sends."],
+ ["Retail","Plan a seasonal promotion",1,"No single best plan; agents simulate options, a manager picks."],
+ ["HR","Shortlist candidates for interview",1,"Fit is debatable; agents rank applicants, a recruiter judges the list."],
+ ["Logistics","Reroute shipments after a port delay",1,"Trade-offs on cost vs speed; agents propose routes, a planner approves."],
+ ["Finance","Alert when a stock moves more than 3.5%",2,"A fixed threshold; AI can monitor and notify alone, with spot checks."],
+ ["HR","Filter resumes by an ATS",2,"Hard requirements are yes/no; the system screens, with audits for bias."],
+ ["Retail","Reorder stock below a set level",2,"A clear trigger; AI places orders alone, with spending limits."],
+ ["IT","Patch servers on a schedule",2,"Defined procedure; automation runs it, with rollback checks."],
+ ["Healthcare","Choose a treatment with a patient",3,"Values and preferences decide; the doctor decides, AI offers evidence."],
+ ["Legal","Decide whether to settle a lawsuit",3,"A judgment call on risk; the lawyer and client decide, AI models outcomes."],
+ ["Sales","Set pricing for a key account",3,"Relationship-driven; a person decides, AI suggests ranges."],
+ ["Logistics","Choose a new warehouse location",3,"Strategic and long-term; leaders decide, AI compares sites."]
 ];
 const placed=new Set(), chips=document.getElementById("chips");
 function place(i){
