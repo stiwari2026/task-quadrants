@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place a Task</title>
+<style>
+  :root{--ink:#1d2b4f;--accent:#c8364a;--muted:#6b7280;--line:#d7dce5;--bg:#fff;--panel:#f7f9fc;
+    --q1:#fbf4fb;--q1b:#d8b4d8;--q2:#f3f8fc;--q2b:#a9c7dc;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 16px}
+  .eyebrow{color:#2f6f9f;letter-spacing:.18em;font-weight:700;font-size:13px;text-transform:uppercase}
+  h1{font-size:28px;margin:20px 0 8px}
+  .sub{font-size:17px;margin:0 0 20px}
+  .card{border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:6px;padding:16px 20px;background:var(--panel)}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .badge{background:var(--accent);color:#fff;font-weight:700;letter-spacing:.12em;font-size:12px;padding:6px 14px;border-radius:999px}
+  .count{font-family:ui-monospace,monospace;font-size:15px}
+  .grid{display:grid;grid-template-columns:180px 1fr 1fr;gap:12px;align-items:stretch}
+  .colh{text-align:center;font-weight:700;font-size:18px;padding:8px 0}
+  .rowh{display:flex;align-items:center;justify-content:center;text-align:center;font-weight:600;font-size:17px;line-height:1.4;padding:0 8px}
+  .q{border:1.5px solid;border-radius:8px;padding:12px 16px;min-height:170px}
+  .q h3{margin:0 0 12px;font-size:17px}
+  .q.a{background:var(--q1);border-color:var(--q1b)}
+  .q.b{background:var(--q2);border-color:var(--q2b)}
+  .items{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+  .item{display:flex;align-items:center;gap:8px;font-size:15px;animation:pop .25s ease}
+  .dot{width:16px;height:16px;border-radius:50%;flex:none}
+  @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1}}
+  .note{margin-top:14px;border-left:4px solid #2f6f9f;background:#eef2f7;padding:12px 16px;font-size:15px;min-height:46px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{border:none;color:#fff;font-weight:600;font-size:14px;padding:6px 10px;border-radius:3px;cursor:pointer;font-family:inherit}
+  .chip.done{opacity:.45}
+  .ctl{background:var(--ink)}
+  .clear{background:#fff;color:var(--ink);border:1px solid var(--ink)}
+  .hint{margin-top:10px;font-style:italic;color:#2f6f9f;font-size:14px;background:#eef2f7;padding:8px 16px;border-left:4px solid #2f6f9f}
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr}
+    .colh.blank,.rowh{display:none}
+    .items{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Place a task · your turn</div>
+  <h1>Where would you place each of these tasks, and who should lead it?</h1>
+  <p class="sub">Call the quadrant for each task before you click. The placement and its reason appear below.</p>
+
+  <div class="card">
+    <div class="top"><span class="badge">● INTERACTIVE EXPLAINER</span><span class="count" id="count">0 of 16 placed</span></div>
+    <div class="grid">
+      <div class="colh blank"></div>
+      <div class="colh">Work with a right answer</div>
+      <div class="colh">Work with no single right answer</div>
+
+      <div class="rowh">Work that people and AI must do together</div>
+      <div class="q a"><h3>A person leads, AI inside</h3><div class="items" id="q0"></div></div>
+      <div class="q b"><h3>Agents run it, a person judges</h3><div class="items" id="q1"></div></div>
+
+      <div class="rowh">Work that either of them can do alone</div>
+      <div class="q b"><h3>AI alone, with checks</h3><div class="items" id="q2"></div></div>
+      <div class="q a"><h3>A person decides, AI alongside</h3><div class="items" id="q3"></div></div>
+    </div>
+    <div class="note" id="note">Click a task card to place it.</div>
+    <div class="chips" id="chips"></div>
+    <div class="hint">▸ Click a task card to place it, or Show all. Every task is illustrative.</div>
+  </div>
+</div>
+<script>
+const C={Bank:"#1d2b4f",Government:"#0e6f8f",Product:"#9a7417",Marketing:"#c8364a",Payments:"#17804f",Insurer:"#17804f",Tech:"#2f7f9f",Consulting:"#7b4fb0","Asset manager":"#17804f"};
+const T=[
+ ["Bank","Check a loan file",0,"Clear criteria, but a person owns the credit call with AI checking documents."],
+ ["Government","Approve a benefit claim",0,"Rules decide eligibility, yet accountability needs a person to sign off."],
+ ["Product","Write release notes",0,"Facts are fixed; a person shapes them with AI drafting."],
+ ["Marketing","Translate a product page",0,"There is a correct meaning; a person checks tone with AI translating."],
+ ["Payments","Match payments to invoices",2,"Deterministic matching AI can run alone, with exception checks."],
+ ["Insurer","Check a claim form",2,"Completeness checks are rule-based and automatable."],
+ ["Tech","Reset a password by policy",2,"A fixed policy AI can execute with audit checks."],
+ ["Government","Check a permit form",2,"Form validation has a right answer AI can verify."],
+ ["Marketing","Test ad versions",1,"Agents can run many variants; a person judges what fits the brand."],
+ ["Consulting","Size a market",1,"Many defensible estimates; agents gather, a person judges."],
+ ["Product","Sort user comments",1,"Clustering is open-ended; agents sort, a person judges themes."],
+ ["Insurer","Settle a disputed claim",1,"Negotiated outcome; agents prepare, a person judges fairness."],
+ ["Consulting","Advise on a merger",3,"Judgment-heavy; a person decides with AI analysis alongside."],
+ ["Bank","Plan a negotiation",3,"Strategy and relationships; a person decides."],
+ ["Asset manager","Write investor letter",3,"Voice and trust matter; a person writes, AI assists."],
+ ["Government","Draft a policy",3,"Value trade-offs; a person decides, AI supports research."]
+];
+const placed=new Set(), chips=document.getElementById("chips");
+function place(i){
+  if(placed.has(i))return; placed.add(i);
+  const [f,t,q,why]=T[i];
+  const el=document.createElement("div");el.className="item";
+  el.innerHTML=`<span class="dot" style="background:${C[f]}"></span>${f} · ${t}`;
+  document.getElementById("q"+q).appendChild(el);
+  chips.children[i].classList.add("done");
+  document.getElementById("count").textContent=`${placed.size} of 16 placed`;
+  document.getElementById("note").textContent = placed.size===16
+    ? "All sixteen tasks are placed. Every function has tasks in more than one quadrant, so place the task in front of you, never a whole job."
+    : `${f} · ${t}: ${why}`;
+}
+T.forEach(([f,t],i)=>{const b=document.createElement("button");b.className="chip";b.style.background=C[f];
+  b.textContent=`${f} · ${t}`;b.onclick=()=>place(i);chips.appendChild(b);});
+const all=document.createElement("button");all.className="chip ctl";all.textContent="Show all";
+all.onclick=()=>T.forEach((_,i)=>place(i));chips.appendChild(all);
+const clr=document.createElement("button");clr.className="chip clear";clr.textContent="Clear";
+clr.onclick=()=>{placed.clear();[0,1,2,3].forEach(q=>document.getElementById("q"+q).innerHTML="");
+  [...chips.children].forEach(c=>c.classList.remove("done"));
+  document.getElementById("count").textContent="0 of 16 placed";
+  document.getElementById("note").textContent="Click a task card to place it.";};
+chips.appendChild(clr);
+</script>
+</body>
+</html>
